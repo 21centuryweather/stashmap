@@ -105,9 +105,13 @@ def write_namelist(input_src: Union[str, Path, List[BaseSection]], output_txt: s
 
     Parameters
     ----------
-    input_src : str or pathlib.Path or list of BaseSection
+    input_src : str or pathlib.Path or list of BaseSection. 
     output_txt : str
         Path to the output namelist text file to write.
+    
+    Notes
+    -----
+    For now, it only supports creating the namelist from a CSV file for variables (nor for time or domain profiles).
     """
     def generate_suffix(isec, item, dom_name, tim_name):
         data = f"{isec}:{item}:{dom_name}:{tim_name}".encode()
@@ -170,17 +174,17 @@ def write_namelist(input_src: Union[str, Path, List[BaseSection]], output_txt: s
     with open(csv_path, newline='') as f, open(output_txt, 'w') as out:
         reader = csv.DictReader(f)
         for row in reader:
-            try:
-                isec = int(row.get('ISEC', 0))
-                item = int(row.get('ITEM', 0))
-            except Exception:
-                isec = 0
-                item = 0
+            isec = int(row.get('ISEC', row.get('isec', 0)))
+            item = int(row.get('ITEM', row.get('item', 0)))
             dom_name = row.get('DOM PROFILE', row.get('dom_name', '')).strip()
             use_name = row.get('USE', row.get('use_name', '')).strip()
             package = row.get('PACKAGE', row.get('package', '')).strip()
             tim_name = row.get('TIME PROFILE', row.get('tim_name', '')).strip()
-            suffix = f"{isec:02d}{item:03d}_{generate_suffix(isec, item, dom_name, tim_name)}"
+
+            if row.get('id', '').strip() is not None:
+                suffix = row.get('id').strip()
+            else:
+                suffix = f"{isec:02d}{item:03d}_{generate_suffix(isec, item, dom_name, tim_name)}"
             out.write(f"[namelist:umstash_streq({suffix})]\n")
             if dom_name:
                 out.write(f"dom_name='{dom_name}'\n")
