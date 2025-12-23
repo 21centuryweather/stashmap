@@ -13,26 +13,31 @@ permissions:
 
 jobs:
   build-docs:
-    runs-on: ubuntu-latest
-
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        python-version: [3.11]
     steps:
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v4.5.2
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c # v5.1.0
-        with:
-            python-version: ${{ matrix.python-version }}
+    - uses: actions/checkout@v2
 
-      - name: Install hatch
-        run: |
-            python -m pip install --upgrade pip
-            python -m pip install hatch
+    # Install dependencies
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v1
+      with:
+        python-version: ${{ matrix.python-version }}
 
-      - name: Build documentation using Hatch
-        run: |
-            hatch run docs:build
+    - name: Install hatch
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install hatch
+
+    - name: Build documentation using Hatch
+      run: |
+          hatch run docs:build
       
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: docs/_build/html
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: docs/_build/html
