@@ -31,6 +31,7 @@ its purpose, and any important notes.
 # Expose parsing utilities (import implementations directly)
 from .parse_namelist import read_namelist
 from .parse_namelist import write_namelist
+from .parse_namelist import export_sections_to_csv
 from .parse_profile import describe_variable
 from .parse_profile import describe_profiles
 
@@ -48,6 +49,7 @@ from .parse_core import (
 __all__ = [
 	'read_namelist',
 	'write_namelist',
+    'export_sections_to_csv',
 	'describe_variable',
 	'describe_profiles',
 	'BaseSection',
