@@ -157,9 +157,7 @@ def write_namelist(input_src: Union[str, Path, List[BaseSection]], output_txt: s
                         return f"{key}={s}"
                     return f"{key}='{s}'"
                 for key, value in (section.record or {}).items():
-                    if key in ('section', 'id', 'incl'):
-                        continue
-                    if key == 'variable_name' and sect_name == 'umstash_streq':
+                    if key in ('section', 'id', 'incl', 'description'):
                         continue
                     out.write(_wrap_val(key, value, sect_name) + '\n')
                 out.write('\n')
@@ -196,3 +194,109 @@ def write_namelist(input_src: Union[str, Path, List[BaseSection]], output_txt: s
                 out.write(f"use_name='{use_name}'\n")
             out.write("\n")
     return None
+
+
+"""Export section objects to CSV files."""
+import csv
+from pathlib import Path
+from typing import List, Union
+from .parse_core import BaseSection
+
+
+def export_sections_to_csv(sections: List[BaseSection], output_path: Union[str, Path], section_type: str = "all"):
+    """Export parsed section objects to CSV file(s).
+    
+    Parameters
+    ----------
+    sections : list of BaseSection
+        List of section objects (instances of Variable, TimeProfile, DomainProfile, etc.).
+    output_path : str or pathlib.Path
+        Base path for output file(s) (without extension).
+    section_type : str, optional
+        Type of sections to export: "all", "variables", "time", or "domain" (default "all").
+        - "all": creates 3 CSV files (variables, time, domain)
+        - "variables": creates only variables CSV
+        - "time": creates only time profiles CSV
+        - "domain": creates only domain profiles CSV
+    
+    Examples
+    --------
+    >>> sections = read_namelist("rose-app.conf")
+    >>> export_sections_to_csv(sections, "stash", "all")
+    Exported 150 variables to stash_variables.csv
+    Exported 12 time to stash_time.csv
+    Exported 8 domain to stash_domain.csv
+    """
+    output_path = str(output_path)
+    
+    # Filter sections by type
+    variables = [s for s in sections if type(s).__name__ == "Variable"]
+    time_profiles = [s for s in sections if type(s).__name__ == "TimeProfile"]
+    domain_profiles = [s for s in sections if type(s).__name__ == "DomainProfile"]
+    
+    # Define export configurations
+    export_configs = {
+        "variables": (variables, f"{output_path}_variables.csv"),
+        "time": (time_profiles, f"{output_path}_time.csv"),
+        "domain": (domain_profiles, f"{output_path}_domain.csv")
+    }
+    
+    # Determine which sections to export
+    if section_type == "all":
+        sections_to_export = ["variables", "time", "domain"]
+    elif section_type in export_configs:
+        sections_to_export = [section_type]
+    else:
+        raise ValueError(f"Invalid section_type: {section_type}. Must be 'all', 'variables', 'time', or 'domain'")
+    
+    # Export each requested section
+    for section_name in sections_to_export:
+        section_list, file_path = export_configs[section_name]
+        
+        if not section_list:
+            print(f"Warning: No {section_name} found to export")
+            continue
+        
+        # Collect all unique fields from records
+        all_fields = set()
+        for section in section_list:
+            for key in section.record.keys():
+                if key not in ('section', 'incl'):
+                    # Remove '!!' prefix from field names
+                    clean_key = key.lstrip('!')
+                    all_fields.add(clean_key)
+        
+        # Sort fields for consistent column order, with 'id' first if present
+        fieldnames = sorted(all_fields)
+        if 'id' in fieldnames:
+            fieldnames.remove('id')
+            fieldnames.insert(0, 'id')
+        
+        # Move 'description' to the end if present
+        if 'description' in fieldnames:
+            fieldnames.remove('description')
+            fieldnames.append('description')
+        
+        # Add 'incl' column at the beginning (after id if present)
+        insert_pos = 1 if 'id' in fieldnames else 0
+        fieldnames.insert(insert_pos, 'incl')
+        
+        # Write to CSV
+        with open(file_path, 'w', newline='', encoding='utf-8') as csvfile:
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames, extrasaction='ignore')
+            writer.writeheader()
+            
+            for section in section_list:
+                row = {}
+                # Process record, removing '!!' prefix and excluding 'section'
+                for key, value in section.record.items():
+                    if key not in ('section'):
+                        clean_key = key.lstrip('!')
+                        # For keys with !!, the value should be empty string
+                        if key.startswith('!!'):
+                            row[clean_key] = ''
+                        else:
+                            row[clean_key] = value
+                # Add incl column with TRUE/FALSE
+                row['incl'] = section.incl
+                writer.writerow(row)
