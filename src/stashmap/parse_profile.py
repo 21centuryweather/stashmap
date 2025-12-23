@@ -406,9 +406,9 @@ def describe_variable(obj_or_code: Union[str, List[Union[str, BaseSection]]], cs
         short = f"m01s{isec_i:02d}i{item_i:03d}"
         name = mapping.get(short.lower()) or mapping.get(short)
         if name:
-            rec['variable_name'] = name
+            rec['description'] = name
             try:
-                setattr(item, 'variable_name', name)
+                setattr(item, 'description', name)
             except Exception:
                 pass
         out.append(name)
