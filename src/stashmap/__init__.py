@@ -28,13 +28,12 @@ This might include a very brief description of the package,
 its purpose, and any important notes.
 """
 
-# Expose parsing utilities
-from .parse import (
-	parse_namelist,
-	generate_namelist_from_csv,
-	stash_code_to_name,
-	parse_profile_to_human,
-)
+# Expose parsing utilities (import implementations directly)
+from .parse_namelist import read_namelist
+from .parse_namelist import write_namelist
+from .parse_profile import describe_variable
+from .parse_profile import describe_profiles
+
 
 # Expose core section classes
 from .parse_core import (
@@ -47,10 +46,10 @@ from .parse_core import (
 )
 
 __all__ = [
-	'parse_namelist',
-	'generate_namelist_from_csv',
-	'stash_code_to_name',
-	'parse_profile_to_human',
+	'read_namelist',
+	'write_namelist',
+	'describe_variable',
+	'describe_profiles',
 	'BaseSection',
 	'Variable',
 	'TimeProfile',
