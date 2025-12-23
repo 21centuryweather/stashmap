@@ -34,6 +34,8 @@ except importlib.metadata.PackageNotFoundError:
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
 extensions = [
     "myst_parser",
+    "jupyter_sphinx",
+    "nbsphinx",
     "sphinx_design",
     "sphinx_copybutton",
     "sphinx.ext.intersphinx",
@@ -88,6 +90,14 @@ autoapi_dirs = ["../src"]
 autoapi_add_toctree = False
 autoapi_keep_files = False
 autoapi_options = ["members", "undoc-members", "show-inheritance"]
+
+# -- myst-nb / jupyter execution settings ----------------------------------
+# Enable execution of `.. jupyter-execute::` blocks. Options are typically
+# 'off', 'auto' or 'force'. 'auto' will execute when a kernel is available.
+jupyter_execute_notebooks = "auto"
+# Default kernel name to use when executing; make sure this kernel exists
+# in the environment used to build the docs.
+jupyter_kernel_name = "python3"
 
 # -- Options for HTML output ---------------------------------------------------
 

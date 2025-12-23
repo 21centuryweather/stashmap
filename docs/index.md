@@ -1,15 +1,14 @@
----
-format: gfm
-execute:
-  daemon: false
----
+# stashmap
 
-# Welcome to stashmap
+## Overview
 
-|        |        |
-|--------|--------|
-| Package | [![Latest PyPI Version](https://img.shields.io/pypi/v/stashmap.svg)](https://pypi.org/project/stashmap/) [![Supported Python Versions](https://img.shields.io/pypi/pyversions/stashmap.svg)](https://pypi.org/project/stashmap/)  |
-| Coverage | [![Codecov test coverage](https://codecov.io/gh/xxx/xxx/graph/badge.svg)](https://app.codecov.io/gh/xxx/xxx) | 
+:::{toctree}
+:maxdepth: 2
+:hidden:
+:caption: Contents:
+Home <self>
+Examples <examples>
+:::
 
 The `stashmap` package provides functions to read and modify the stash and associated variables for the UM model. It main focus is to convert the relevant sections in the UM namelist (usually in `rose-app.conf`) into a `.csv` file for easy manipulation and then convert it back to the namelist format. 
 
@@ -25,19 +24,19 @@ $ pip install git+https://github.com/21centuryweather/stashmap.git
 
 ## Example
 
-```{python}
+```python
 import stashmap
 ```
 
 Read from namelist:
 
-```{python}
+```python
 sections = stashmap.read_namelist("examples/rose-app.conf", print_summary=True)
 ```
 
 Add human-readable variable names:
 
-```{python}
+```python
 stashmap.describe_variable(sections)
 
 variables = [s for s in sections if isinstance(s, stashmap.Variable)]
@@ -52,8 +51,9 @@ And write to csv:
 stashmap.export_sections_to_csv(sections, "examples/stash", section_type="variables")
 ```
 
+For a longer, runnable example see the Usage page: :doc:`usage`.
 
-## Copyright
 
-- Copyright © 2025 Pao Corrales.
-- Free software distributed under the [MIT License](./LICENSE).
+## Licence
+
+- Free software distributed under the MIT License.

@@ -161,7 +161,10 @@ description = """Build or serve the documentation."""
 features = [
     "docs",
 ]
-
+dependencies = [
+    "jupyter_sphinx",
+    "nbsphinx",
+]
 # This table contains the scripts that you can use to build and serve your docs
 # hatch run docs:build will build your documentation
 # hatch run docs:serve will serve them 'live' on your computer locally

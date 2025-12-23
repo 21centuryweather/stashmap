@@ -5,7 +5,7 @@
 |  |  |
 |----|----|
 | Package | [![Latest PyPI Version](https://img.shields.io/pypi/v/stashmap.svg)](https://pypi.org/project/stashmap/) [![Supported Python Versions](https://img.shields.io/pypi/pyversions/stashmap.svg)](https://pypi.org/project/stashmap/) |
-| Meta | [![Code of Conduct](https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg)](CODE_OF_CONDUCT.md) |
+| Coverage | [![Codecov test coverage](https://codecov.io/gh/xxx/xxx/graph/badge.svg)](https://app.codecov.io/gh/xxx/xxx) |
 
 The `stashmap` package provides functions to read and modify the stash
 and associated variables for the UM model. It main focus is to convert
@@ -25,8 +25,7 @@ environment using:
 $ pip install git+https://github.com/21centuryweather/stashmap.git
 ```
 
-TODO: Add a brief example of how to use the package to this section \##
-Example
+## Example
 
 ``` python
 import stashmap
