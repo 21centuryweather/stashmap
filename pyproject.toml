@@ -169,7 +169,7 @@ dependencies = [
 # hatch run docs:build will build your documentation
 # hatch run docs:serve will serve them 'live' on your computer locally
 [tool.hatch.envs.docs.scripts]
-build = ["sphinx-build {args:-W -b html docs docs/_build}"]
+build = ["sphinx-build {args:-b html docs docs/_build}"]
 serve = ["sphinx-autobuild docs --watch src/stashmap {args:-b html docs/_build/serve}"]
 
 

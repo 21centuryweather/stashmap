@@ -6,26 +6,22 @@ on:
     branches:
       - main
 
-permissions:
-  contents: write
-
 jobs:
-  docs:
+  build-docs:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-      - name: Install dependencies
-        run: |
-          pip install -r requirements.txt
-      - name: Sphinx build
-        run: |
-          sphinx-build docs/ _build
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v4.5.2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c # v5.1.0
         with:
-          publish_branch: gh-pages
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: _build/
-          force_orphan: true
+            python-version: ${{ matrix.python-version }}
+
+      - name: Install hatch
+        run: |
+            python -m pip install --upgrade pip
+            python -m pip install hatch
+
+      - name: Build documentation using Hatch
+        run: |
+            hatch run docs:build
