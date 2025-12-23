@@ -1,0 +1,67 @@
+stashmap.parse_namelist
+=======================
+
+.. py:module:: stashmap.parse_namelist
+
+.. autoapi-nested-parse::
+
+   Parse namelist text into typed section objects.
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:function:: read_namelist(input_src: Union[str, pathlib.Path], print_summary: bool = True) -> List[stashmap.parse_core.BaseSection]
+
+   Read a namelist text or file into classified section objects.
+
+   :param input_src: Path to a namelist file, or a string containing the namelist text.
+   :type input_src: str or pathlib.Path
+   :param print_summary: If True, print a brief summary of parsed section counts (default True).
+   :type print_summary: bool, optional
+
+   :returns: A list of section objects (instances of subclasses of ``BaseSection``).
+   :rtype: list of BaseSection
+
+
+.. py:function:: write_namelist(input_src: Union[str, pathlib.Path, List[stashmap.parse_core.BaseSection]], output_txt: str)
+
+   Write a namelist file from CSV rows or parsed section list produced by read_namelist().
+
+   :param input_src:
+   :type input_src: str or pathlib.Path or list of BaseSection.
+   :param output_txt: Path to the output namelist text file to write.
+   :type output_txt: str
+
+   .. rubric:: Notes
+
+   For now, it only supports creating the namelist from a CSV file for variables (nor for time or domain profiles).
+
+
+.. py:function:: export_sections_to_csv(sections: List[stashmap.parse_core.BaseSection], output_path: Union[str, pathlib.Path], section_type: str = 'all')
+
+   Export parsed section objects to CSV file(s).
+
+   :param sections: List of section objects (instances of Variable, TimeProfile, DomainProfile, etc.).
+   :type sections: list of BaseSection
+   :param output_path: Base path for output file(s) (without extension).
+   :type output_path: str or pathlib.Path
+   :param section_type: Type of sections to export: "all", "variables", "time", or "domain" (default "all").
+                        - "all": creates 3 CSV files (variables, time, domain)
+                        - "variables": creates only variables CSV
+                        - "time": creates only time profiles CSV
+                        - "domain": creates only domain profiles CSV
+   :type section_type: str, optional
+
+   .. rubric:: Examples
+
+   >>> sections = read_namelist("rose-app.conf")
+   >>> export_sections_to_csv(sections, "stash", "all")
+   Exported 150 variables to stash_variables.csv
+   Exported 12 time to stash_time.csv
+   Exported 8 domain to stash_domain.csv
+
+

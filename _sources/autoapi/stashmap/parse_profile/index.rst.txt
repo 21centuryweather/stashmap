@@ -1,0 +1,64 @@
+stashmap.parse_profile
+======================
+
+.. py:module:: stashmap.parse_profile
+
+.. autoapi-nested-parse::
+
+   Helpers to convert parsed TimeProfile and DomainProfile objects to
+   human-friendly strings.
+
+   The function accepts either a single object/dict or a list of objects/dicts.
+   Each item should be either an instance of one of the classes produced by
+   ``parse_namelist()`` (subclasses of ``BaseSection``) or a plain ``dict`` with
+   the same keys. Only `TimeProfile` and `DomainProfile` are processed; other
+   items are returned unchanged.
+
+   For processed items the function will add a new string field named
+   ``description`` to the object's ``record`` (and as an attribute on the object
+   when possible) and return the modified item(s).
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:function:: describe_profiles(profiles: Union[Any, List[Any]], profile_type: str = None) -> Union[Any, List[Any]]
+
+   Attach a human-friendly `human_name` to profile objects.
+
+   :param profiles: A single parsed section object (subclass of ``BaseSection``) or a
+                    dictionary with the same keys, or a list of such items.
+   :type profiles: object or list
+   :param profile_type: Optional hint: 'time' or 'domain'. If omitted the function will
+                        infer the type from the object/record keys.
+   :type profile_type: str, optional
+
+   :returns: * The same item or list of items passed in, with ``description`` added to
+             * each processed item's `record` and as an attribute when possible.
+
+
+.. py:function:: describe_variable(obj_or_code: Union[str, List[Union[str, stashmap.parse_core.BaseSection]]], csv_path: Optional[Union[str, pathlib.Path]] = None)
+
+   Lookup human-readable variable names for STASH codes.
+
+   :param obj_or_code:
+                       - If a string (e.g. ``'m01s00i003'`` or a URI containing this token),
+                         the function returns the matching human label or ``None``.
+                       - If an iterable of strings or parsed section objects is provided, the
+                         function returns a list of labels (or ``None`` for missing matches).
+                         When parsed section objects are given, the function will attempt to
+                         augment each object in-place by setting ``record['variable_name']``
+                         and ``obj.variable_name`` when a match is found.
+   :type obj_or_code: str or list
+   :param csv_path: Path to a STASH codes CSV to use for lookups. If omitted the function
+                    tries to locate ``examples/stash_codes.csv`` inside the package.
+   :type csv_path: str or pathlib.Path, optional
+
+   :returns: If a single string was passed in, returns a single label or ``None``.
+             If an iterable was passed, returns a list of labels (or ``None`` entries).
+   :rtype: str or list
+
+

@@ -1,0 +1,65 @@
+stashmap.parse_core
+===================
+
+.. py:module:: stashmap.parse_core
+
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:class:: BaseSection
+
+   .. py:attribute:: id
+      :type:  Optional[str]
+
+
+   .. py:attribute:: incl
+      :type:  bool
+
+
+   .. py:attribute:: record
+      :type:  Dict[str, Any]
+
+
+   .. py:method:: from_record(record: Dict[str, Any])
+      :classmethod:
+
+
+
+   .. py:method:: to_csv_row() -> Dict[str, Any]
+
+
+   .. py:method:: to_namelist_lines() -> List[str]
+
+
+.. py:class:: Variable
+
+   Bases: :py:obj:`BaseSection`
+
+
+.. py:class:: TimeProfile
+
+   Bases: :py:obj:`BaseSection`
+
+
+.. py:class:: DomainProfile
+
+   Bases: :py:obj:`BaseSection`
+
+
+.. py:class:: UseProfile
+
+   Bases: :py:obj:`BaseSection`
+
+
+.. py:class:: OutputStream
+
+   Bases: :py:obj:`BaseSection`
+
+
+.. py:function:: classify_record(record: Dict[str, Any]) -> BaseSection
+
