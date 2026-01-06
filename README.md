@@ -18,8 +18,14 @@ get the human version for the time and domain profiles.
 
 ## Get started
 
-For now, you can install this package into your preferred Python
-environment using:
+You can install this package into your preferred Python environment
+using:
+
+``` bash
+$ pip install stashmap
+```
+
+Or the development version from:
 
 ``` bash
 $ pip install git+https://github.com/21centuryweather/stashmap.git

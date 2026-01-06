@@ -17,7 +17,12 @@ It also includes helpers to get variable names from stash codes and to get the h
 
 ## Get started
 
-For now, you can install this package into your preferred Python environment using:
+You can install this package into your preferred Python environment using:
+
+```bash
+$ pip install stashmap
+```
+Or the development version from:
 
 ```bash
 $ pip install git+https://github.com/21centuryweather/stashmap.git
