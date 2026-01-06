@@ -87,7 +87,7 @@ use_name='UPA'
 
     # Read from csv and write namelist
 
-    write_namelist("examples/stash_variables.csv", output_file)
+    write_namelist("examples/new_stash_vars.csv", output_file)
 
     with open(output_file, "r") as f:
         content = f.read()
