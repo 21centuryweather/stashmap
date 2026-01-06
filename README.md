@@ -72,7 +72,6 @@ And write to csv:
 stashmap.export_sections_to_csv(sections, "examples/stash", section_type="variables")
 ```
 
-## Copyright
+## License
 
-- Copyright © 2025 Pao Corrales.
-- Free software distributed under the [MIT License](./LICENSE).
+Open software distributed under the [MIT License](./LICENSE).
