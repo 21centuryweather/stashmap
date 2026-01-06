@@ -5,7 +5,7 @@
 |  |  |
 |----|----|
 | Package | [![Latest PyPI Version](https://img.shields.io/pypi/v/stashmap.svg)](https://pypi.org/project/stashmap/) [![Supported Python Versions](https://img.shields.io/pypi/pyversions/stashmap.svg)](https://pypi.org/project/stashmap/) |
-| Coverage | [![Codecov test coverage](https://codecov.io/gh/xxx/xxx/graph/badge.svg)](https://app.codecov.io/gh/xxx/xxx) |
+| Coverage | [![Codecov test coverage](https://codecov.io/gh/21centuryweather/stashmap/graph/badge.svg)](https://app.codecov.io/gh/21centuryweather/stashmap) |
 
 The `stashmap` package provides functions to read and modify the stash
 and associated variables for the UM model. It main focus is to convert
