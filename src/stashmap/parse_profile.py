@@ -372,7 +372,10 @@ def describe_variable(obj_or_code: Union[str, List[Union[str, BaseSection]]], cs
         code = str(code).strip()
         m = token_re.search(code)
         key = m.group(0).lower() if m else code.lower()
-        return mapping.get(key)
+        if mapping.get(key) is not None:
+            return mapping.get(key) 
+        else:
+            return "Name not available"
 
     if isinstance(obj_or_code, str):
         return _lookup_code(obj_or_code)
