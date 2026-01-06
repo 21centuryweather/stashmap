@@ -181,7 +181,7 @@ def write_namelist(input_src: Union[str, Path, List[BaseSection]], output_txt: s
             package = row.get('PACKAGE', row.get('package', '')).strip()
             tim_name = row.get('TIME PROFILE', row.get('tim_name', '')).strip()
 
-            if row.get('id', '').strip() is not None:
+            if row.get('id', None) is not None:
                 suffix = row.get('id').strip()
             else:
                 suffix = f"{isec:02d}{item:03d}_{generate_suffix(isec, item, dom_name, tim_name)}"
